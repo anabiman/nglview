@@ -198,6 +198,7 @@ setup_args = {
         "ase": ["ase"],
         "htmd": ["htmd"],
         "qcelemental": ["qcelemental"],
+        "mmelemental": ["mmelemental"],
     },
     'packages': set(find_packages() + 
                 ['nglview',

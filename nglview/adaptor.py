@@ -38,6 +38,7 @@ __all__ = [
     'ASETrajectory',
     'SchrodingerStructure',
     'SchrodingerTrajectory',
+    'MMElementalTrajectory',
     'register_backend',
 ]
 
@@ -159,6 +160,33 @@ class QCElementalStructure(Structure):
 
     def get_structure_string(self):
         return self._obj.to_string('nglview-sdf')
+
+
+class MMElementalStructure(Structure):
+    def __init__(self, obj):
+        super().__init__()
+        self._obj = obj
+        self.ext = 'pdb'
+
+    def get_structure_string(self):
+        with mkstemp_wrapper(suffix='.pdb') as fname:
+            self._obj.to_file(fname)
+            with open(fname) as fh:
+                return fh.read()
+
+
+class MMElementalTrajectory(Trajectory, MMElementalStructure):
+    '''MMElemental adaptor.
+    '''
+    def __init__(self, obj):
+        MMElementalStructure.__init__(self, obj)
+
+    @property
+    def n_frames(self):
+        return self._obj.nframes
+
+    def get_coordinates(self, index):
+        return self._obj.get_geometry(index)
 
 
 class Psi4Structure(QCElementalStructure):

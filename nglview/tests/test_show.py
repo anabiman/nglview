@@ -95,6 +95,23 @@ def test_show_qcelemental_show_psi4():
     nglview.show_psi4(MockMol())
 
 
+def test_show_mmelemental():
+
+    water_pdb = """ REMARK
+    HETATM    1  H   SOL     1       2.000   1.000  -0.000  1.00  0.00           H
+    HETATM    2  O   SOL     1       2.000   2.090   0.000  1.00  0.00           O
+    HETATM    3  H   SOL     1       1.490   2.450   0.890  1.00  0.00           H
+    END
+    """
+    class MockMol:
+        def to_file(self, filename):
+            with open(filename, "w") as fh:
+                fh.write(water_pdb)
+
+    v = nglview.show_mmelemental(MockMol())
+    v
+
+
 def test_show_openbabel():
     import types
     openbabel = types.ModuleType('openbabel')

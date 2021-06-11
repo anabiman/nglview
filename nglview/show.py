@@ -6,10 +6,9 @@ from .adaptor import (ASEStructure, ASETrajectory, BiopythonStructure,
                       IOTBXStructure, MDAnalysisTrajectory, MDTrajTrajectory,
                       OpenbabelStructure, ParmEdTrajectory, PdbIdStructure,
                       ProdyStructure, ProdyTrajectory, PyTrajTrajectory,
-                      QCElementalStructure, RosettaStructure,
-                      SchrodingerStructure, SchrodingerTrajectory,
-                      RdkitStructure,
-                      TextStructure)
+                      QCElementalStructure, MMElementalStructure, MMElementalTrajectory,
+                      RosettaStructure, SchrodingerStructure, SchrodingerTrajectory,
+                      RdkitStructure, TextStructure)
 from .widget import NGLWidget
 
 __all__ = [
@@ -22,6 +21,7 @@ __all__ = [
     'show_iotbx',
     'show_iodata',
     'show_qcelemental',
+    'show_mmelemental',
     'show_openbabel',
     'show_psi4',
     'show_rosetta',
@@ -111,6 +111,23 @@ def show_qcelemental(obj, **kwargs):
     ... view
     """
     return NGLWidget(QCElementalStructure(obj), **kwargs)
+
+
+def show_mmelemental(obj, **kwargs):
+    """Show MMElemental's Molecule or Trajectory.
+
+    Examples
+    --------
+    >>> import nglview as nv
+    >>> import mmelemental as mmel # doctest: +SKIP
+    ... mol = mmel.models.Molecule(symbols=["H"], geometry=[0,0,0])
+    ... view = nv.show_mmelemental(mol)
+    ... view
+    """
+    if hasattr(obj, "nframes"):
+        return NGLWidget(MMElementalTrajectory(obj), **kwargs)
+    else:
+        return NGLWidget(MMElementalStructure(obj), **kwargs)
 
 
 def show_psi4(obj, **kwargs):
